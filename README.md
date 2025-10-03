@@ -26,6 +26,27 @@ This solution's backend is written in Python. There are also [**JavaScript**](ht
 [![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=GitHub+Codespaces&message=Open&color=brightgreen&logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=599293758&machine=standardLinux32gb&devcontainer_path=.devcontainer%2Fdevcontainer.json&location=WestUs2)
 [![Open in Dev Containers](https://img.shields.io/static/v1?style=for-the-badge&label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/azure-samples/azure-search-openai-demo)
 
+
+# Steps For Offix
+
+- have an azure account.
+- create github codespaces with all tools pre-installed to deploy (see button above)
+- `azd auth login --use-device-code` > select the correct subscription
+- `azd env new` > provide a name
+- (optional) enable login by following this [docs/login_and_acl.md](docs/login_and_acl.md)
+- `azd up` 
+  - select the regions you want to deploy to
+  - if you have a free account select sweden central. If it's not available select west europe
+- when done you will see a url printed in the terminal
+- (Optional) Invite people if login is enabled.
+  - follow the steps to add an external user: https://learn.microsoft.com/en-us/entra/external-id/b2b-quickstart-add-guest-users-portal
+  - the person should accept the invite and follow the steps it received.
+  - the person should then navigate to the link of the webapp (the one that is printed in the terminal at deployment time)
+  - sign in with the same email address > follow the steps > get a one time code in it's inbox > copy paste the code > et voila you're in
+  - now you can ask questions
+
+
+
 ## Important Security Notice
 
 This template, the application code and configuration it contains, has been built to showcase Microsoft Azure specific services and tools. We strongly advise our customers not to make this code part of their production environments without implementing or enabling additional security features. See our [productionizing guide](docs/productionizing.md) for tips, and consult the [Azure OpenAI Landing Zone reference architecture](https://techcommunity.microsoft.com/blog/azurearchitectureblog/azure-openai-landing-zone-reference-architecture/3882102) for more best practices.
