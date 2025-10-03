@@ -3,6 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import { useLogin, checkLoggedIn } from "./authConfig";
 import { LoginContext } from "./loginContext";
 import Layout from "./pages/layout/Layout";
+import { Login } from "./pages/login/Login";
 
 const LayoutWrapper = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -26,7 +27,7 @@ const LayoutWrapper = () => {
 
         return (
             <LoginContext.Provider value={{ loggedIn, setLoggedIn }}>
-                <Layout />
+                {loggedIn ? <Layout /> : <Login />}
             </LoginContext.Provider>
         );
     } else {
@@ -37,7 +38,7 @@ const LayoutWrapper = () => {
                     setLoggedIn
                 }}
             >
-                <Layout />
+                {loggedIn ? <Layout /> : <Login />}
             </LoginContext.Provider>
         );
     }
