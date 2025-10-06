@@ -29,8 +29,11 @@ This solution's backend is written in Python. There are also [**JavaScript**](ht
 
 # Steps For Offix
 
-- have an azure account.
+## Deployment
+
+- have an azure account + have an admin role
 - create github codespaces with all tools pre-installed to deploy (see button above)
+- upload all the documents to `data/` folder.
 - `azd auth login --use-device-code` > select the correct subscription
 - `azd env new` > provide a name
 - (optional) enable login by following this [docs/login_and_acl.md](docs/login_and_acl.md)
@@ -45,6 +48,43 @@ This solution's backend is written in Python. There are also [**JavaScript**](ht
   - sign in with the same email address > follow the steps > get a one time code in it's inbox > copy paste the code > et voila you're in
   - now you can ask questions
 
+## Cost
+
+### Embedding Pipeline
+  - Embedding all the documents (Azure Openai Model)
+    - All offix files and annexes -> 2,5 million tokens 
+    - We use ada model €0.000113 per 1000 tokens -> 0.28 euro
+    - More info here: https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/ (look for embedding models.)
+
+  - Process annex (pdf's, docx, etc.) (Azure Document Intelligence)
+    - All annex files -> 49 files + 492 pages in total
+    - 8.5 euro per 1000 pages -> 4.21 euro
+    - More info here: https://azure.microsoft.com/en-us/pricing/details/ai-document-intelligence/
+
+  __Total cost embedding pipeline: 4.5 euro per full run__
+
+### Inference Pipeline
+
+  - AI ready database (Azure AI Search)
+    - 15GB (S0 smallest instance) -> €63.07/month
+    - We assume it can handle the query load of a handful of people
+    - More info here: https://azure.microsoft.com/en-us/pricing/details/search/
+
+  - Answer questions
+    - Question: 18 tokens -> embedding with ada (€0.000113 per 1000 tokens) -> €0.002
+    - Answer: 
+      - total tokens: system prompt (1300 tokens) + Question (18 tokens) + chunks of internal data (750 tokens) -> 2068 tokens
+      - price for input: 2067 token x 0.00000035 euro = 0.00072345 euro per question
+      - price for output:  78 tokens × 0.00000137 euro = 0.00010686 euro per answer
+      - total price per question: 0,083 eurocent.
+      - about 1 euro for 1000 questions
+    - More info here: https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/ (look for gpt-4.1-mini global)
+
+   __Total cost AI services for inference: 65 euro__
+
+  - Running Application
+    - Docker container on Container app
+    - 1 vCPU, 2 GiB, 3 seconds per request on the Azure Container Apps Consumption plan -> __0.1 euro per 1000 requests__
 
 
 ## Important Security Notice
